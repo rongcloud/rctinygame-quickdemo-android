@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RCTinyGameQuickDemo</string>
+    <string name="basis_loading">加载中</string>
+</resources>

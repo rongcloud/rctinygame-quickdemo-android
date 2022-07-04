@@ -1,0 +1,5 @@
+[gerrit]
+host=gerrit.rongcloud.net
+port=29418
+project=rctinygamelib-android
+defaultbranch=master
