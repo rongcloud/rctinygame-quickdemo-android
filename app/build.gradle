@@ -1,0 +1,105 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 30
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        configurations.all {
+            resolutionStrategy { force 'androidx.lifecycle:lifecycle-runtime:2.3.1' }
+            resolutionStrategy { force 'androidx.room:room-runtime:2.2.6' }
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions("environment")
+    productFlavors {
+        developerEnvironment {
+            dimension 'environment'
+            // 用户替换成自己的包名
+            applicationId "cn.rongcloud.scene.game.tiny.dev"
+            // 用户替换为自己服务器地址
+            buildConfigField("String", "BASE_SERVER_ADDRES", "\"https://rcrtc-api.rongcloud.net/\"")
+            // 如果想直接运行本demo，请到 https://rcrtc-api.rongcloud.net/code 申请BusinessToken
+buildConfigField("String", "BUSINESS_TOKEN", "\"xxxx\"")
+        }
+
+        releaseEnvironment {
+            dimension 'environment'
+            applicationId "cn.rongcloud.scene.game.tiny"
+            buildConfigField("String", "BASE_SERVER_ADDRES", "\"xxxxxxx\"")
+            buildConfigField("String", "BUSINESS_TOKEN", "\"xxxxxxx\"")
+
+        }
+
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs '../app/libs'
+    }
+}
+
+dependencies {
+
+    //implementation fileTree(include: ['*.jar', "*.aar"], dir: 'libs')
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.3.1'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+    implementation "cn.rongcloud.sdk:voiceroom_lib:$voiceVersion"
+    implementation "cn.rongcloud.sdk:im_lib:$imVersion"
+    implementation "cn.rongcloud.sdk:im_kit:$imVersion"
+    implementation "cn.rongcloud.sdk:call_lib:$rtcVersion"
+    implementation "cn.rongcloud.sdk:player:$rtcVersion"
+
+    // https://github.com/square/okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    // https://github.com/bumptech/glide
+    implementation "com.github.bumptech.glide:glide:$glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
+    // https://github.com/vinc3m1/RoundedImageView
+    implementation "com.makeramen:roundedimageview:$roundimageview"
+
+    // https://github.com/HarlonWang/AVLoadingIndicatorView
+    implementation "com.wang.avi:library:$indicatorView"
+
+    // 小游戏sdk
+    implementation "cn.rongcloud.sdk:tinygame_lib:$tinyGameLib"
+//    implementation project(path: ':tinygamelib')
+}
